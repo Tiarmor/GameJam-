@@ -8,6 +8,7 @@ public class MenuButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 {
     Text buttonText;
     Vector3 originTextPos;  //记录text原位置
+    Color originColor;      //记录原颜色
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class MenuButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     void Start()
     {
         originTextPos = buttonText.transform.position;
+        originColor = buttonText.color;
     }
 
     // Update is called once per frame
@@ -33,7 +35,7 @@ public class MenuButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        buttonText.color = Color.white;
+        buttonText.color = originColor;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -44,6 +46,7 @@ public class MenuButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         buttonText.transform.position = originTextPos;
+        buttonText.color = originColor;
         switch (buttonText.text)
         {
             case ("Start"):
@@ -55,6 +58,19 @@ public class MenuButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
                 break;
             case ("Exit"):
                 this.transform.parent.GetComponent<MainMenu>().QuitGame();
+                break;
+            case ("Save"):
+                //保存设置
+                
+
+                this.transform.parent.parent.Find("MainMenu").gameObject.SetActive(true);
+                this.transform.parent.gameObject.SetActive(false);
+                break;
+            case ("Cancel"):
+                
+
+                this.transform.parent.parent.Find("MainMenu").gameObject.SetActive(true);
+                this.transform.parent.gameObject.SetActive(false);
                 break;
         }
     

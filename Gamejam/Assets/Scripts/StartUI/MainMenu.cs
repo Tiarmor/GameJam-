@@ -15,6 +15,13 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Quit!!");
         //Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
+    }
+
+    //取消设置并重置所有的界面显示
+    public void CancelChange()
+    {
+
     }
 
 }
