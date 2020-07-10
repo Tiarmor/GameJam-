@@ -11,7 +11,8 @@ public class AudioManager : MonoBehaviour
     AudioSource musicController;
     AudioSource soundController;
     public AudioMixer audioOutput;
-    float vol, defaultVol;
+    public float vol, defaultVol;
+    //float maxVol, minVol;
 
     void Awake()
     {
@@ -27,15 +28,16 @@ public class AudioManager : MonoBehaviour
         AudioSource[] sources = this.GetComponents<AudioSource>();
         musicController = sources[0];
         soundController = sources[1];
+        defaultVol = -40;
+        /*maxVol = 0;
+        minVol = -80;*/
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
         vol = defaultVol;
         audioOutput.SetFloat("MasterVolume", vol);
-        
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public class AudioManager : MonoBehaviour
         
     }
 
-    public AudioManager GetInstance()
+    public static AudioManager GetInstance()
     {
         return instance;
     }
@@ -69,6 +71,10 @@ public class AudioManager : MonoBehaviour
     //设置主音量
     public void SetMasterVolume(float volume)
     {
+        /*
+        volume = volume > maxVol ? volume : maxVol;
+        volume = volume < minVol ? volume : minVol;
+        */
         vol = volume;
         audioOutput.SetFloat("MasterVolume", vol);
     }
@@ -76,6 +82,10 @@ public class AudioManager : MonoBehaviour
     //设置背景音乐音量
     public void SetMusicVolume(float volume)
     {
+        /*
+        volume = volume > maxVol ? volume : maxVol;
+        volume = volume < minVol ? volume : minVol;
+        */
         vol = volume;
         audioOutput.SetFloat("MusicVolume", volume);
     }
@@ -83,6 +93,10 @@ public class AudioManager : MonoBehaviour
     //设置场景特效音量
     public void SetSoundVolume(float volume)
     {
+        /*
+        volume = volume > maxVol ? volume : maxVol;
+        volume = volume < minVol ? volume : minVol;
+        */
         vol = volume;
         audioOutput.SetFloat("SoundVolume", vol);
     }

@@ -62,10 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CharacterController\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\CharacterController\RobotController.cs" />
+    <Compile Include="Assets\Scripts\Managers\ActionManager.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\StartUI\MainMenu.cs" />
     <Compile Include="Assets\Scripts\StartUI\MenuButton.cs" />
-    <Compile Include="Assets\Scripts\StartUI\SettingMenu.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>F:/UnityProjects/GameJam/GameJam-/Gamejam/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
