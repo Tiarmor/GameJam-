@@ -7,14 +7,15 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     public float runSpeed;
     public float jumpSpeed;
-    public float lastHor;
-    public float gravity;
+    float lastHor;
+    float gravity;
 
-    private Rigidbody2D myRigidbody;
-    private Animator myAnim;
-    private BoxCollider2D myFeet;
+    Rigidbody2D myRigidbody;
+    Animator myAnim;
+    BoxCollider2D myFeet;
     public bool isGround;
 
+    bool isActing;  //两个动作不能同时进行
     private void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         lastHor = this.transform.localScale.x;
-        gravity = 5;
+        gravity = 6;
     }
 
     // Update is called once per frame
@@ -35,11 +36,15 @@ public class PlayerController : MonoBehaviour
 
         Move();
         Jump();
-        Idle();
         Attack();
         Crouch();
 
-        myRigidbody.velocity = myRigidbody.velocity - new Vector2(0, 5 * Time.deltaTime);
+        myRigidbody.velocity = myRigidbody.velocity - new Vector2(0, gravity * Time.deltaTime);
+
+        myAnim.SetFloat("HorizontalSpeed", Mathf.Abs(myRigidbody.velocity.x));
+        myAnim.SetFloat("VerticalSpeed", myRigidbody.velocity.y);
+        myAnim.SetBool("Crouch", Input.GetKey(KeyCode.S));
+        myAnim.SetBool("OnGround", isGround);
     }
 
     void CheckGrounded()
@@ -48,30 +53,25 @@ public class PlayerController : MonoBehaviour
         isGround = myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"));
     }
 
-
     void Move()
     {
         float moveDir = Input.GetAxis("Horizontal");
-        myRigidbody.velocity = new Vector2(moveDir * runSpeed, myRigidbody.velocity.y);
+
         if (moveDir * lastHor < 0)
         {
             this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y, this.transform.localScale.z);
         }
         lastHor = moveDir == 0 ? lastHor : moveDir;
-        myAnim.SetBool("Run", Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon);
+        myRigidbody.velocity = new Vector2(moveDir * runSpeed, myRigidbody.velocity.y);
     }
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.K)) 
+        if (Input.GetKeyDown(KeyCode.K)&& isGround) 
         {
-            //只有在地面上时才能跳跃
-            if(isGround)
-            {
-                Vector2 jumpVel = new Vector2(0.0f, jumpSpeed);
-
-                myRigidbody.velocity = Vector2.up * jumpVel;
-            }   
+            isActing = true;
+            Vector2 jumpVel = new Vector2(0.0f, jumpSpeed);
+            myRigidbody.velocity = Vector2.up * jumpVel;              
         }
     }
 
@@ -79,32 +79,26 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.J))
         {
+            isActing = true;
             myAnim.SetTrigger("Attack");
             myAnim.SetBool("Idle", false);
             myAnim.SetBool("Crouch", false);
         }
     }
 
-    void AttackEnd()
-    {
-        myAnim.ResetTrigger("Attack");
-    }
-
     void Crouch()
     {
-        if (Input.GetKeyDown(KeyCode.S) && isGround)
+        if (isActing || !Input.GetKeyDown(KeyCode.S))
         {
-            myAnim.SetBool("Crouch", true);
-            myAnim.SetBool("Idle", false);
+            //return;
         }
+        myAnim.SetBool("Crouch", true);
+        myAnim.SetBool("Idle", false);
     }
 
-    void Idle()
+    void ActEnd()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            myAnim.SetBool("Idle", true);
-            myAnim.SetBool("Crouch", false);
-        }
+        isActing = false;
     }
+
 }
