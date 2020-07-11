@@ -64,6 +64,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CharacterController\PlayerController.cs" />
     <Compile Include="Assets\Scripts\CharacterController\RobotController.cs" />
+    <Compile Include="Assets\Scripts\ConfigMenu\ActionCard.cs" />
+    <Compile Include="Assets\Scripts\ConfigMenu\ActionConfig.cs" />
+    <Compile Include="Assets\Scripts\ConfigMenu\ActionPreview.cs" />
+    <Compile Include="Assets\Scripts\ConfigMenu\DecideButton.cs" />
     <Compile Include="Assets\Scripts\Managers\ActionManager.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
